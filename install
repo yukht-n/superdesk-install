@@ -89,19 +89,14 @@ wait_elastic() {
 if ! _skip_install elasticsearch; then
     # for elasticsearch 2.4.x declare next
     # elastic_version=2.4
-    #version=${elastic_version:-1.7}
-    #curl -s https://packages.elastic.co/GPG-KEY-elasticsearch | apt-key add -
-    #echo "deb https://packages.elastic.co/elasticsearch/$version/debian stable main" \
-    #    > /etc/apt/sources.list.d/elastic.list
-    #curl -L -O https://download.elastic.co/elasticsearch/release/org/elasticsearch/distribution/tar/elasticsearch/2.4.6/elasticsearch-2.4.6.tar.gz
-    #tar -xvf elasticsearch-2.4.6.tar.gz
-    #cd elasticsearch-2.4.6/bin
-    #./elasticsearch
-    curl -L -O https://download.elastic.co/elasticsearch/release/org/elasticsearch/distribution/deb/elasticsearch/2.4.0/elasticsearch-2.4.0.deb
-    sudo dpkg -i elasticsearch-2.4.0.deb
+    version=${elastic_version:-1.7}
+    curl -s https://packages.elastic.co/GPG-KEY-elasticsearch | apt-key add -
+    echo "deb https://packages.elastic.co/elasticsearch/$version/debian stable main" \
+        > /etc/apt/sources.list.d/elastic.list
     apt-get -y update
     apt-get -y install --no-install-recommends \
-        openjdk-8-jre-headless
+        openjdk-8-jre-headless \
+        elasticsearch
     unset version
 fi
 
@@ -201,7 +196,7 @@ cd $repo
 if [ ! -d $repo/.git ]; then
     git init
     git remote add origin https://github.com/superdesk/superdesk.git
-    repo_ref=${repo_ref:-'heads/master'}
+    repo_ref=${repo_ref:-'heads/publisher'}
     repo_sha=
     git fetch origin $repo_ref:
     git checkout ${repo_sha:-FETCH_HEAD}
