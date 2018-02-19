@@ -93,6 +93,7 @@ if ! _skip_install elasticsearch; then
     curl -s https://packages.elastic.co/GPG-KEY-elasticsearch | apt-key add -
     echo "deb https://packages.elastic.co/elasticsearch/$version/debian stable main" \
         > /etc/apt/sources.list.d/elastic.list
+
     apt-get -y update
     apt-get -y install --no-install-recommends \
         openjdk-8-jre-headless \
