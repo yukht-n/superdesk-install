@@ -38,11 +38,11 @@ if ! _skip_install redis-server; then
     systemctl restart redis-server
 fi
 
-# mongo
+# mongo sudo bash -c 'echo "deb http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/4.0 multiverse" > /etc/apt/sources.list.d/mongodb-org-4.0.list'
 if ! _skip_install mongodb-org-server; then
-    apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv EA312927
-    echo "deb http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.2 multiverse" \
-        > /etc/apt/sources.list.d/mongodb-org-3.2.list
+    apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv E52529D4
+    echo "deb http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/4.0 multiverse" 
+        > /etc/apt/sources.list.d/mongodb-org-4.0.list
 
     apt-get -y update
     apt-get -y install --no-install-recommends \
@@ -278,26 +278,6 @@ EOF
 _activate
 
 
-[ -z "${prepopulate-1}" ] || (
-### prepopulate
-_activate
-cd /opt/superdesk/server
-
-_sample_data() {
-    sample_data=${sample_data:-}
-    [ -z "$sample_data" ] || sample_data='--sample-data'
-    (python manage.py app:initialize_data --help | grep -- --sample-data) && sample_data=$sample_data || sample_data=
-}
-
-if _missing_db; then
-    _sample_data
-    python manage.py app:initialize_data $sample_data
-    python manage.py users:create -u admin -p admin -e 'admin@example.com' --admin
-else
-    python manage.py app:initialize_data
-fi
-unset sample_data
-)
 
 [ -z "${grunt_build-1}" ] || (
 cd /opt/superdesk/client
@@ -531,4 +511,3 @@ systemctl restart $service
 nginx -s reload
 unset smtp_py mails
 )
-
