@@ -38,18 +38,7 @@ if ! _skip_install redis-server; then
     systemctl restart redis-server
 fi
 
-# mongo sudo bash -c 'echo "deb http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/4.0 multiverse" > /etc/apt/sources.list.d/mongodb-org-4.0.list'
-if ! _skip_install mongodb-org-server; then
-    apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv E52529D4
-    echo "deb http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/4.0 multiverse" 
-        > /etc/apt/sources.list.d/mongodb-org-4.0.list
-
-    apt-get -y update
-    apt-get -y install --no-install-recommends \
-        mongodb-org-server \
-        mongodb-org-shell \
-        mongodb-org-tools
-fi
+# mongo skiped
 
 # tune mongo
 cfg=/etc/mongod.conf
