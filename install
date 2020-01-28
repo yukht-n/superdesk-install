@@ -65,16 +65,6 @@ systemctl restart mongod
 
 
 # elasticsearch
-wait_elastic() {
-    elastic=0
-    while [ $elastic -eq 0 ]
-    do
-        curl -s "http://localhost:9200" 2>&1 > /dev/null \
-            && elastic=1 \
-            || echo "waiting for elastic..."
-        sleep 5
-    done
-}
 
 
 # tune elasticsearch
